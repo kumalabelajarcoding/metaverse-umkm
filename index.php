@@ -1,12 +1,73 @@
+<?php
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header('Location: login.html');
+    exit();
+}
+
+$userName = isset($_SESSION['user_nama']) ? $_SESSION['user_nama'] : 'User';
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pameran Digital UMKM - Galeri Produk Lokal</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=2.5">
+    <!-- ... check other lines ... -->
+    <script src="assets/js/data.js?v=2.8"></script>
+    <script src="assets/js/main.js?v=2.8"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #8B4513;
+            font-weight: 500;
+        }
+        .user-info i {
+            color: #D2691E;
+        }
+        .btn-logout {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        @media (max-width: 768px) {
+            .user-menu {
+                display: none;
+            }
+            .nav-menu.active .user-menu {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation Header -->
@@ -22,6 +83,16 @@
                 <li><a href="#produk" class="nav-link">Produk</a></li>
                 <li><a href="#tentang" class="nav-link">Tentang</a></li>
             </ul>
+            <div class="user-menu">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span><?php echo htmlspecialchars($userName); ?></span>
+                </div>
+                <a href="api/logout.php" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Keluar
+                </a>
+            </div>
             <div class="nav-toggle">
                 <span></span>
                 <span></span>
@@ -121,7 +192,7 @@
                 </div>
                 <div class="footer-section">
                     <h4>Kontak</h4>
-                    <p><i class="fas fa-envelope"></i> info@umkmdigital.com</p>
+                    <p><i class="fas fa-envelope"></i> IG kumalaes</p>
                     <p><i class="fas fa-phone"></i> +62 123 456 789</p>
                 </div>
             </div>
@@ -151,13 +222,11 @@
                         Deskripsi produk akan muncul di sini...
                     </p>
                     <div class="modal-actions">
-                        <button id="whatsappBtn" class="btn-whatsapp">
-                            <i class="fab fa-whatsapp"></i>
-                            Hubungi via WhatsApp
+                        <button id="modalChatBtn" class="btn-modal-chat">
+                            <i class="fab fa-whatsapp"></i> Chat Seller
                         </button>
-                        <button id="instagramBtn" class="btn-instagram">
-                            <i class="fab fa-instagram"></i>
-                            Lihat Instagram
+                        <button id="modalCheckoutBtn" class="btn-modal-checkout">
+                            <i class="fas fa-shopping-cart"></i> Checkout Sekarang
                         </button>
                     </div>
                 </div>
@@ -166,7 +235,7 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="assets/js/data.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/data.js?v=2.8"></script>
+    <script src="assets/js/main.js?v=2.8"></script>
 </body>
 </html>
